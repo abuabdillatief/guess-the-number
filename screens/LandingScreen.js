@@ -13,10 +13,29 @@ import Colors from "../constants/colors";
 import Input from "../components/Input";
 
 export default function LandingScreen() {
+  let confirmedOutput;
   const [enteredValue, setEnteredValue] = useState("");
+  const [confirmed, setConfirmed] = useState(false);
+  const [selectedNumber, setSelectedNumber] = useState();
+
   function inputHandler(inputText) {
     setEnteredValue(inputText.replace(/[^0-9]/g, ""));
   }
+
+  function confirmInputHandler() {
+    const chosenNumber = parseInt(enteredValue);
+    if (isNan(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      return;
+    }
+    setConfirmed(true);
+    setEnteredValue("");
+    setSelectedNumber(parseInt(enteredValue));
+  }
+
+  if (confirmed) {
+    confirmedOutput = <Text>Chosen Number:: {selectedNumber}</Text>;
+  }
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -38,12 +57,24 @@ export default function LandingScreen() {
           />
           <View style={styles.buttons}>
             <View style={styles.button}>
-              <Button title={"Reset"} onPress={() => {}} color={Colors.reset} />
+              <Button
+                title={"Reset"}
+                onPress={() => {
+                  setEnteredValue("");
+                }}
+                color={Colors.reset}
+              />
             </View>
             <View style={styles.button}>
-              <Button title={"Confirm"} onPress={() => {}} />
+              <Button
+                title={"Confirm"}
+                onPress={() => {
+                  confirmInputHandler();
+                }}
+              />
             </View>
           </View>
+          {confirmedOutput}
         </Card>
       </View>
     </TouchableWithoutFeedback>
