@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput, StyleSheet, ImagePropTypes } from "react-native";
 
 const Input = (props) => {
-  return <TextInput  {...props} style={{ ...styles.input, ...props.style }} />;
+  return <TextInput {...props} style={{ ...styles.input, ...props.style }} />;
 };
 
 const styles = StyleSheet.create({
@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "grey",
     marginVertical: 15,
+    alignItems: "center",
   },
 });
 export default Input;

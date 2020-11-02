@@ -6,11 +6,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   View,
+  Alert,
 } from "react-native";
 
 import Card from "../components/Card";
 import Colors from "../constants/colors";
 import Input from "../components/Input";
+import Number from "../components/Number";
 
 export default function LandingScreen() {
   let confirmedOutput;
@@ -18,22 +20,41 @@ export default function LandingScreen() {
   const [confirmed, setConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState();
 
-  function inputHandler(inputText) {
+  const inputHandler = (inputText) => {
     setEnteredValue(inputText.replace(/[^0-9]/g, ""));
-  }
+  };
 
-  function confirmInputHandler() {
+  const resetInputHandler = () => {
+    setEnteredValue("");
+    setConfirmed(false);
+    Keyboard.dismiss();
+  };
+
+  const confirmInputHandler = () => {
     const chosenNumber = parseInt(enteredValue);
-    if (isNan(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert("Invalid Number", "Numer has to be between 1 to 99.", [
+        {
+          text: "Ok",
+          style: "destructive",
+          onPress: resetInputHandler,
+        },
+      ]);
       return;
     }
     setConfirmed(true);
     setEnteredValue("");
     setSelectedNumber(parseInt(enteredValue));
-  }
+  };
 
   if (confirmed) {
-    confirmedOutput = <Text>Chosen Number:: {selectedNumber}</Text>;
+    confirmedOutput = (
+      <Card style={styles.chosen}>
+        <Text>You selected:</Text>
+        <Number>{selectedNumber}</Number>
+        <Button title="START GAME" />
+      </Card>
+    );
   }
 
   return (
@@ -43,7 +64,6 @@ export default function LandingScreen() {
       }}
     >
       <View style={styles.screen}>
-        <Text>Start A New Game!</Text>
         <Card style={styles.input}>
           <Text style={styles.title}>Select a Number</Text>
           <Input
@@ -74,8 +94,8 @@ export default function LandingScreen() {
               />
             </View>
           </View>
-          {confirmedOutput}
         </Card>
+        {confirmedOutput}
       </View>
     </TouchableWithoutFeedback>
   );
@@ -96,6 +116,7 @@ const styles = StyleSheet.create({
     maxWidth: "80%",
     alignItems: "center",
     textAlign: "center",
+    justifyContent: "center",
   },
   buttons: {
     flexDirection: "row",
@@ -106,8 +127,16 @@ const styles = StyleSheet.create({
   button: {
     width: 100,
   },
-  imput: {
-    width: 30,
+  input: {
+    alignItems: "center",
+    width: "90%",
+    marginTop: 10,
     marginBottom: 10,
+  },
+  chosen: {
+    marginVertical: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    padding: 10,
   },
 });
