@@ -14,7 +14,7 @@ import Colors from "../constants/colors";
 import Input from "../components/Input";
 import Number from "../components/Number";
 
-export default function LandingScreen() {
+export default function LandingScreen({ onStartGame }) {
   let confirmedOutput;
   const [enteredValue, setEnteredValue] = useState("");
   const [confirmed, setConfirmed] = useState(false);
@@ -52,7 +52,10 @@ export default function LandingScreen() {
       <Card style={styles.chosen}>
         <Text>You selected:</Text>
         <Number>{selectedNumber}</Number>
-        <Button title="START GAME" />
+        <Button
+          title="START GAME"
+          onPress={() => onStartGame(selectedNumber)}
+        />
       </Card>
     );
   }
