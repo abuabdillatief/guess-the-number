@@ -1,4 +1,4 @@
 export default {
-  primary: "#a8df65",
-  reset: "#ff4b5c",
+  primary: "#492b7b",
+  reset: "#f7d914",
 };
